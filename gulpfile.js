@@ -1,7 +1,10 @@
 var gulp = require('gulp'); 
 var concat = require('gulp-concat'); 
 var uglify = require('gulp-uglify'); 
+var uglifycss = require('gulp-uglifycss');
 var rename = require('gulp-rename'); 
+var sass = require('gulp-sass');
+
 
 // Concat all js files into app.js 
 gulp.task('concatScripts', function() {
@@ -18,4 +21,18 @@ gulp.task('scripts', ['concatScripts'], function () {
 	.pipe(rename('all.min.js'))
 	.pipe(gulp.dest('dist/scripts'));
 }) 
+
+// Compile sass into css
+gulp.task('compileSass', function () {
+	return gulp.src('sass/global.scss')
+		.pipe(sass())
+		.pipe(gulp.dest('css')); 
+})
+
+// Minify styles/css and insert into all.min.css 
+gulp.task('minifyStyles', ['compileSass'], function () {
+	gulp.src('css/global.css')
+		.pipe(uglifycss())
+		.pipe(gulp.dest('dist/styles'));
+})
 
