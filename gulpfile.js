@@ -8,15 +8,15 @@ var sass = require('gulp-sass');
 
 // Concat all js files into app.js 
 gulp.task('concatScripts', function() {
-	gulp.src(['js/circle/autogrow.js',
+	return gulp.src(['js/circle/autogrow.js',
 			'js/circle/circle.js', 
 			'js/global.js'
 		]).pipe(concat('app.js')).pipe(gulp.dest('js'));
 });
 
-// Minify all js files and insert into all.min.js
-gulp.task('minifyScripts', function () {
-	gulp.src('js/app.js')
+// Minify all js files and insert into all.min.js after concatentaion
+gulp.task('scripts', ['concatScripts'], function () {
+	return gulp.src('js/app.js')
 	.pipe(uglify())
 	.pipe(rename('all.min.js'))
 	.pipe(gulp.dest('dist/scripts'));
@@ -35,3 +35,4 @@ gulp.task('minifyStyles', ['compileSass'], function () {
 		.pipe(uglifycss())
 		.pipe(gulp.dest('dist/styles'));
 })
+
