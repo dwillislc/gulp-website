@@ -5,6 +5,7 @@ var uglifycss = require('gulp-uglifycss');
 var rename = require('gulp-rename'); 
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
+var imagemin = require('gulp-imagemin');
 
 // Concat all js files into app.js 
 gulp.task('concatScripts', function() {
@@ -24,7 +25,7 @@ gulp.task('scripts', ['concatScripts'], function () {
 	.pipe(uglify())
 	.pipe(rename('all.min.js'))
 	.pipe(gulp.dest('dist/scripts'));
-}) 
+}); 
 
 // Compile sass into css and write scss to a sourcemap
 gulp.task('compileSass', function () {
@@ -33,7 +34,7 @@ gulp.task('compileSass', function () {
 		.pipe(sass())
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('css')); 
-})
+});
 
 // Minify styles/css and insert into all.min.css 
 gulp.task('styles', ['compileSass'], function () {
@@ -41,5 +42,18 @@ gulp.task('styles', ['compileSass'], function () {
 		.pipe(uglifycss())
 		.pipe(rename('all.min.css'))
 		.pipe(gulp.dest('dist/styles'));
-})
+});
+
+// Optimize the size of images 
+gulp.task('images', function() {
+	gulp.src('images/*')
+		.pipe(imagemin({verbose: true}))
+		.pipe(gulp.dest('dist/content'));
+});
+
+
+
+
+
+
 
