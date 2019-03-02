@@ -8,9 +8,13 @@ var sourcemaps = require('gulp-sourcemaps');
 var imagemin = require('gulp-imagemin');
 var del = require('del'); 
 
+// Clean task 
+gulp.task('clean', function() {
+	return del(['dist', 'js/app.*', 'css/global.css.map']);
+})
 
 // Concat all js files into app.js 
-gulp.task('concatScripts', function() {
+gulp.task('concatScripts', ['clean'], function() {
 	return gulp.src(['js/circle/autogrow.js',
 			'js/circle/circle.js', 
 			'js/global.js'
@@ -30,7 +34,7 @@ gulp.task('scripts', ['concatScripts'], function () {
 }); 
 
 // Compile sass into css and write scss to a sourcemap
-gulp.task('compileSass', function () {
+gulp.task('compileSass', ['clean'], function () {
 	return gulp.src('sass/global.scss')
 		.pipe(sourcemaps.init())
 		.pipe(sass())
@@ -47,17 +51,22 @@ gulp.task('styles', ['compileSass'], function () {
 });
 
 // Optimize the size of images 
-gulp.task('images', function() {
+gulp.task('images', ['clean'], function() {
 	gulp.src('images/*')
 		.pipe(imagemin({verbose: true}))
 		.pipe(gulp.dest('dist/content'));
 });
 
-// Clean task 
-gulp.task('clean', function() {
-	del(['dist', 'js/app.*', 'css/global.css.map']);
-})
+// Build task 
+gulp.task("build", ['scripts', 'styles', 'images'], function () {
+	return gulp.src(['icons/**', 'index.html'], { base: './'})
+		.pipe(gulp.dest('dist')); 
+}); 
 
+// Final gulp task to serve production application 
+gulp.task('default', function () {
+	gulp.start('build'); 
+});
 
 
 
