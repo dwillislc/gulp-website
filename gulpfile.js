@@ -6,6 +6,8 @@ var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var imagemin = require('gulp-imagemin');
+var del = require('del'); 
+
 
 // Concat all js files into app.js 
 gulp.task('concatScripts', function() {
@@ -51,6 +53,10 @@ gulp.task('images', function() {
 		.pipe(gulp.dest('dist/content'));
 });
 
+// Clean task 
+gulp.task('clean', function() {
+	del(['dist', 'js/app.*', 'css/global.css.map']);
+})
 
 
 
