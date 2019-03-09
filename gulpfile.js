@@ -8,7 +8,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var imagemin = require('gulp-imagemin');
 var del = require('del'); 
 
-// Clean task 
+// Clean task is here
 gulp.task('clean', function() {
 	return del(['dist', 'js/app.*', 'css/global.css.map']);
 })
